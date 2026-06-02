@@ -1,0 +1,5 @@
+The biggest danger is logic management. If your code expects the archive to be a specific byte-offset, and you create a sparse file, your program must be aware that the "padding" isn't just invisible; it is a valid part of the file.
+
+If you are using this to reserve space for future headers, you must ensure that your archive_header_t (or a global index) explicitly tracks where the "real" data begins, otherwise, your program might try to read the "sparse hole" as if it were a valid data file.
+
+Are you planning to use this to reserve space at the beginning of your archive for potential future metadata, or are you looking to separate files with gaps?
