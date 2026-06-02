@@ -1,10 +1,14 @@
 #include <stdio.h>
+
 #include "carchive.c"
 #include "ifarchive.c"
 #include "dfarchive.c"
 #include "narchive.c"
 #include "design.c"
 #include "larchive.c"
+#include "helper.c"
+#include "xarchive.c"
+#include "rarchive.c"
 
 void parser(int argv, char **args) {
     // 'i' -> Inseart new file
@@ -22,6 +26,7 @@ void parser(int argv, char **args) {
     char *flag = args[1];
     char *archive_name = args[2];
     char *filename = args[3];
+    char *sec_filename = args[4];
 
     if(flag[0] == '-') {
         switch (flag[1]) {
@@ -40,9 +45,9 @@ void parser(int argv, char **args) {
             printf("-i [archive] [filename] : Insert file\n");
             printf("-d [archive] [filename] : Delete file\n");
             printf("-l [archive] : List contents\n");
-            printf("-x [archive] [filename (optional)] : Extract\n");
+            printf("-x [archive] [filename] : Extract\n");
             printf("-n [archive] : Files Count\n");
-            printf("-r [archive] [filename] : Replace File\n");
+            printf("-r [archive] [filename to replace] [replace filename] : Replace File\n");
             printf("\n[archive] \n ");
             print_copyright();  
             break;
@@ -56,15 +61,19 @@ void parser(int argv, char **args) {
             break;
 
         case 'x':
-
+            e_file_from_archive(archive_name,filename);
             break;
 
         case 'n':
             archive_file_count(archive_name);
             break;
 
+        case 'r':
+            r_file_with_file(archive_name,filename,sec_filename);
+            break;
+
         default:
-            
+
             break;
             
         }

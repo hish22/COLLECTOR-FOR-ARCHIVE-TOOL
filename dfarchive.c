@@ -8,7 +8,7 @@
 #include "dfarchive.h"
 #include "design.h"
 
-void append_data_line_by_line(FILE *sfp, FILE *dfp, char *filename, int files_count, files_header_t *files_header, int cond_state) {
+void append_data_line_by_line(FILE *sfp, FILE *dfp, char* filename, int files_count, files_header_t *files_header, int cond_state) {
     char buffer[8192]; // 8KB buffer
     for (int i = 0; i < files_count; i++) {
         if (cond_state != 0 ? DELETECOND : EXTRACTCOND) {             

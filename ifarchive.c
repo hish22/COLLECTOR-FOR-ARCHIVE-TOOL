@@ -3,19 +3,20 @@
 #include <sys/stat.h>
 #include <string.h>
 #include "carchive.h"
+#include "helper.h"
 
 #define stat_t struct stat
 
-void write_new_file_header(FILE *fp, int file_size, char* filename ,archive_header_t arch_header) {
+void write_new_file_header(FILE *fp, int file_size, char* filename) {
     files_header_t new_file_header;
     memset(&new_file_header, 0, sizeof(files_header_t));
     new_file_header.file_size = file_size;
-    strncpy(new_file_header.filename, filename, 80);
+    strncpy(new_file_header.filename, get_file_name(filename), 80);
 
     fwrite(&new_file_header, sizeof(files_header_t), 1, fp);
 }
 
-void append_file_content(FILE *fp, char *filename, size_t filesize, archive_header_t arch_header) {
+void append_file_content(FILE *fp, char *filename, size_t filesize) {
     FILE *fp_content = fopen(filename,"rb");
     if(fp_content == NULL) {
         printf("Failed to append file content \n");
@@ -51,6 +52,8 @@ void i_file_into_archive(char *archive_name, char *filename) {
     FILE *atfp = fopen("arch.tmp","wb");
     if (atfp == NULL) {
         printf("Failed to open tmp file");
+        fclose(afp);
+        fclose(atfp);
         return;
     }
 
@@ -79,7 +82,7 @@ void i_file_into_archive(char *archive_name, char *filename) {
     }
 
     // 7 - Write new file header
-    write_new_file_header(atfp, file_stat.st_size, filename, arch_header);
+    write_new_file_header(atfp, file_stat.st_size, filename);
 
     // 8 - Append data of exist archive
     fseek(atfp,0,SEEK_END);
@@ -89,8 +92,8 @@ void i_file_into_archive(char *archive_name, char *filename) {
         fwrite(buf, 1, bytes_read, atfp);
     }
 
-    // 9 - Append file data + file header
-    append_file_content(atfp, filename, file_stat.st_size, arch_header);
+    // 9 - Append file data
+    append_file_content(atfp, filename, file_stat.st_size);
 
     // 10 - Close file
     fclose(afp);

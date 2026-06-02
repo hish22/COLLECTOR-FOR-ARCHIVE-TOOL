@@ -9,4 +9,6 @@
 
 void append_data_line_by_line(FILE *sfp, FILE *dfp, char *filename, int files_count, files_header_t *files_header, int cond_state);
 
+bool check_file_existance(char *filename, files_header_t *files_header, int files_count);
+
 #endif
