@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <string.h>
+
 #include "carchive.h"
 #include "helper.h"
+#include "design.h"
 
 #define stat_t struct stat
 
@@ -44,14 +46,14 @@ void i_file_into_archive(char *archive_name, char *filename) {
     // 1 - Open archive
     FILE *afp = fopen(archive_name,"r+b");
     if(afp == NULL) {
-        printf("Failed to open such file \n");
+        print_error("Failed to open such file \n");
         return;
     }
 
     // 2 - open a new tmp file
     FILE *atfp = fopen("arch.tmp","wb");
     if (atfp == NULL) {
-        printf("Failed to open tmp file");
+        print_error("Failed to open tmp file");
         fclose(afp);
         fclose(atfp);
         return;
@@ -60,7 +62,8 @@ void i_file_into_archive(char *archive_name, char *filename) {
     // 3 - Get file stat
     stat_t file_stat;
     if(stat(filename,&file_stat) != 0) {
-        printf("Failed to get file stat \n");
+        print_error("Failed to get file stat \n");
+        remove("arch.tmp");
         return;
     }
 
@@ -101,5 +104,9 @@ void i_file_into_archive(char *archive_name, char *filename) {
 
     // 11 - Rewrite tmp file into the archive file
     remove(archive_name);
-    rename("arch.tmp",archive_name);
+    int r_state = rename("arch.tmp",archive_name);
+    if(!r_state) {
+        print_success("File inserted");
+    }
+
 }

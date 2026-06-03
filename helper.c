@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
-#include <string.h>
+#include "carchive.h"
 
 char* get_file_name(char *filename) {
     // Find the last forward slash
@@ -19,4 +20,22 @@ char* get_file_name(char *filename) {
     }
     
     return filename;
+}
+
+bool cmp_magic_number(char *archive_file) {
+    // Open archive
+    FILE *afp = fopen(archive_file,"rb");
+    if(afp == NULL) {
+        return false;
+    }
+
+    // Read the archive header
+    archive_header_t arch_header;
+    fread(&arch_header, sizeof(archive_header_t), 1, afp);
+
+    if(arch_header.magic_number == MAGIC_NUMBER) {
+        return true;
+    }
+
+    return false;
 }

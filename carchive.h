@@ -1,5 +1,8 @@
 #ifndef C_ARCHIVE
 #define C_ARCHIVE
+
+#define MAGIC_NUMBER 0x062AB188
+
 typedef struct archive_header{
     const int magic_number;
     unsigned int version_number;

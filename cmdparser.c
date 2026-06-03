@@ -11,13 +11,6 @@
 #include "rarchive.c"
 
 void parser(int argv, char **args) {
-    // 'i' -> Inseart new file
-    // 'c' -> create new archive file
-    // 'h' -> show tool commands and info
-    // 'd' -> delete specific file content
-    // 'l' -> list files from archive
-    // 'x' -> extract file or all files from archive
-    // 'n' -> file coount
     if(argv < 2) {
         printf("Error: No command provided. Use -h for help.\n");
         return;
@@ -31,7 +24,11 @@ void parser(int argv, char **args) {
     if(flag[0] == '-') {
         switch (flag[1]) {
         case 'i':
-            i_file_into_archive(archive_name,filename);
+            if(cmp_magic_number(archive_name)) {
+                i_file_into_archive(archive_name,filename);
+            } else {
+                print_error("Failed to open cfat archive file.");
+            }
             break;
         
         case 'c':
@@ -53,29 +50,48 @@ void parser(int argv, char **args) {
             break;
 
         case 'd':
-            d_file_from_archive(archive_name, filename);
+            if(cmp_magic_number(archive_name)) {
+                d_file_from_archive(archive_name, filename);
+            } else {
+                print_error("Failed to open cfat archive file.");
+            }
             break;
 
         case 'l':
-            list_files_info(archive_name);
+            if(cmp_magic_number(archive_name)) {
+                list_files_info(archive_name);
+            } else {
+                print_error("Failed to open cfat archive file.");
+            }
             break;
 
         case 'x':
-            e_file_from_archive(archive_name,filename);
+            if(cmp_magic_number(archive_name)) {
+                e_file_from_archive(archive_name,filename);
+            } else {
+                print_error("Failed to open cfat archive file.");
+            }
             break;
 
         case 'n':
-            archive_file_count(archive_name);
+            if(cmp_magic_number(archive_name)) {
+                archive_file_count(archive_name);
+            } else {
+                print_error("Failed to open cfat archive file.");
+            }
             break;
 
         case 'r':
-            r_file_with_file(archive_name,filename,sec_filename);
+            if(cmp_magic_number(archive_name)) {
+                r_file_with_file(archive_name,filename,sec_filename);
+            } else {
+                print_error("Failed to open cfat archive file.");
+            }
             break;
 
         default:
-
+            print_error("No such Command");
             break;
-            
         }
     }
 

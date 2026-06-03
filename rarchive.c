@@ -21,14 +21,14 @@ void r_file_with_file(char *archive_name, char *f_to_replace, char *r_file) {
     // 1 - Open archive
     FILE *afp = fopen(archive_name,"r+b");
     if(afp == NULL) {
-        printf("Failed to open such file \n");
+        print_error("Failed to open such file \n");
         return;
     }
 
     // 2 - open a new tmp file
     FILE *atfp = fopen("arch.tmp","wb");
     if (atfp == NULL) {
-        printf("Failed to open tmp file");
+        print_error("Failed to open tmp file");
         return;
     }
 
@@ -36,9 +36,10 @@ void r_file_with_file(char *archive_name, char *f_to_replace, char *r_file) {
     // 3 - Get file stat
     stat_t file_stat;
     if(stat(r_file,&file_stat) != 0) {
-        printf("Failed to get file stat \n");
+        print_error("Failed to get file stat \n");
         fclose(afp);
         fclose(atfp);
+        remove("arch.tmp");
         return;
     }
 
