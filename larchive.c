@@ -37,6 +37,5 @@ void list_files_info(char *archive_name) {
     print_success("Archive contents listed successfully.");
     
     fclose(fh_arch);
-    print_logo();
 }
 

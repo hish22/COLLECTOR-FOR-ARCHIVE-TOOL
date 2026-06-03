@@ -36,6 +36,7 @@ void parser(int argv, char **args) {
             break;
 
         case 'h':
+            print_logo();
             print_program_header();
             printf("Usage: cfat [command] [archive] [filename]\n");
             printf("-c [archive] : Create archive\n");

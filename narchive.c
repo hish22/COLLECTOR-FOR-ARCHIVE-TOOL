@@ -18,5 +18,4 @@ void archive_file_count(char* archive_name) {
     fread(&arch_header, sizeof(archive_header_t), 1, fh_arch);
     printf("\n%sTotal Files in Archive:%s %u\n", CYAN, COLOR_RESET, arch_header.file_count);
     fclose(fh_arch);
-    print_logo();
 }

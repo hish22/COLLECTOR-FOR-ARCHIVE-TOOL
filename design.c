@@ -36,7 +36,7 @@ void print_success(const char *message) {
 
 // 7. print_copyright
 void print_copyright() {
-printf("\n%s[CFAT Tool] Open-source software. Free to use and modify.%s\n\n", BLACK, COLOR_RESET);
+printf("\n%s[CFAT Tool] Open-source software. Free to use and modify.%s\n\n", WHITE, COLOR_RESET);
 }
 
 // 8.print logo
